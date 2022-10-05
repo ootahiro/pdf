@@ -6,15 +6,27 @@ namespace App\Slip\Pdf;
 
 require_once(__DIR__. '/../../tcpdf/tcpdf.php');
 require_once(__DIR__. '/../../tcpdf/fpdi/autoload.php');
-require_once(__DIR__. '/FontSet.php');
 
-use setasign\Fpdi\TcpdfFpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 
-class Pdf extends TcpdfFpdi
+class Pdf extends Fpdi
 {
+    /**
+     * デフォルトの文字設定
+     */
     private FontSet $defaultFontSet;
+    /**
+     * デフォルトの塗り色 [ R, G, B ]
+     */
     private array $defaultFillColor;
+    /**
+     * デバッグ時の塗り色
+     */
     private array $debugFillColor = [200,200,200];
+    /**
+     * テキストの全体デバッグモード
+     * @var bool
+     */
     private bool $globalTextDebug = false;
 
     public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $pdfa = false)
@@ -86,6 +98,7 @@ class Pdf extends TcpdfFpdi
     ): self
     {
         $options = array_merge([
+            // FpdiのMultiCell()の設定と同じ
             'border' => 0,
             'fill' => false,
             'ln' => 1,
@@ -96,8 +109,11 @@ class Pdf extends TcpdfFpdi
             'maxh' => 0,
             'valign' => 'T',
             'fitcell' => false,
+            // 今回のみのフォント設定 FontSetインスタンス
             'font' => null,
+            // fill => true の場合で今回だけ適用する塗り色 [R,G,B]
             'fillColor' => null,
+            // テキストバウンディングボックスのデバッグモード
             'debug' => false
         ], $options);
         if(is_a($options['font'], FontSet::class)) {

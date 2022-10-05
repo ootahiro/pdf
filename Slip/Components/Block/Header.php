@@ -4,8 +4,6 @@
  */
 namespace App\Slip\Components\Block;
 
-require_once (__DIR__. "/../ComponentsAbstract.php");
-
 use App\Slip\Components\ComponentsAbstract;
 use App\Slip\Pdf\FontSet;
 

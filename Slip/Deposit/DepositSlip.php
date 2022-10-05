@@ -4,12 +4,6 @@
  */
 namespace App\Slip\Deposit;
 
-require_once (__DIR__. "/../Pdf/Pdf.php");
-require_once (__DIR__. "/../Pdf/TwoPageTrait.php");
-require_once (__DIR__. "/DepositSlipValue.php");
-require_once (__DIR__ . "/../Components/Block/Header.php");
-require_once (__DIR__ . "/../Components/Parts/Name.php");
-
 use App\Slip\Components\Block\Header;
 use App\Slip\Components\Parts\Name;
 use App\Slip\Pdf\Pdf;

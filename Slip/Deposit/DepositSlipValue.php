@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 外部流入の値を受け渡す
+ */
 namespace App\Slip\Deposit;
 
 class DepositSlipValue
