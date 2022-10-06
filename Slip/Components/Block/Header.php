@@ -28,7 +28,7 @@ class Header extends ComponentsAbstract
             9.5 + $this->offsetY,
             "C",
             55.6,
-            8.2,
+            0,
             [
                 "font" => new FontSet(18.9, FontSet::FONT_MEDIUM)
             ],
@@ -53,7 +53,7 @@ class Header extends ComponentsAbstract
             13.1 + $this->offsetY,
             "C",
             19.1,
-            4,
+            0,
             [
                 "font" => new FontSet(8.9)
             ]
@@ -69,7 +69,7 @@ class Header extends ComponentsAbstract
             12.6 + $this->offsetY,
             "C",
             14.4,
-            4.7,
+            0,
             [
                 "font" => new FontSet(11, FontSet::FONT_MEDIUM)
             ]
@@ -78,6 +78,11 @@ class Header extends ComponentsAbstract
         return $this;
     }
 
+    /**
+     * 伝票番号印字
+     * @param string $number
+     * @return $this
+     */
     public function addSlipNumber(
         string $number
     ): self
@@ -93,7 +98,7 @@ class Header extends ComponentsAbstract
             12.3 + $this->offsetY,
             "R",
             8.1,
-            5.2,
+            0,
             [
                 "font" => new FontSet(8.9)
             ]
@@ -104,7 +109,7 @@ class Header extends ComponentsAbstract
             11.9 + $this->offsetY,
             "C",
             24.2,
-            4.2,
+            0,
             [
                 "font" => new FontSet(9.9, FontSet::FONT_MEDIUM)
             ]

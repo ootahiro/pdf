@@ -13,6 +13,16 @@ class DepositSlipValue
         public string $slipNumber,
         // 宛名
         public string $name,
+        // ロゴファイルのパス
+        public string $logoFile,
+        // 担当営業所名
+        public string $officeName,
+        // 担当者番号
+        public string $chargerNumber,
+        // 担当者名
+        public string $chargerName,
+        // 決算月
+        public string $resolutionMonth,
 
 
 

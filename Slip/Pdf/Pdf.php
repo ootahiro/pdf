@@ -106,7 +106,7 @@ class Pdf extends Fpdi
             'stretch' => 0,
             'ishtml' => false,
             'autopadding' => true,
-            'maxh' => 0,
+            'maxh' => $h,
             'valign' => 'T',
             'fitcell' => false,
             // 今回のみのフォント設定 FontSetインスタンス
@@ -188,12 +188,19 @@ class Pdf extends Fpdi
     {
         $toX = ($toX)? $x + $toX : $x;
         $toY = ($toY)? $y + $toY : $y;
+        $dash = (isset($options['dash']) && $options['dash']);
         $options = array_merge([
-            "width" => $width
+            "width" => $width,
+            "cap" => "round"
         ], $options);
         $this->Line(
             $x, $y, $toX, $toY, $options
         );
+        if($dash) {
+            $this->setLineStyle([
+                "dash" => false
+            ]);
+        }
 
         return $this;
     }

@@ -9,29 +9,25 @@ use App\Slip\Pdf\Pdf;
 $value = new DepositSlipValue(
     "03286",
     "50220400099",
-    "三工機器　株式会社"
+    "三工機器　株式会社",
+    __DIR__. "/ootahiro_logo_w193x30.png",
+    "名古屋西営業所",
+    "505011",
+    "伊藤 守",
+    "12"
 
 );
 
 $pdf = new Pdf("P", "mm", "A4");
-$pdf->AddPage();
-$writer = (new DepositSlip($pdf))
-    ->printing($value)
-    ;
-// 2段目
-$writer = (new DepositSlip($pdf, true))
-    ->printing($value)
-;
+$pdf->setGlobalTextDebug(false);
 
-// 2ページ目
 $pdf->AddPage();
 $writer = (new DepositSlip($pdf))
     ->printing($value)
-;
-// 2段目
-$writer = (new DepositSlip($pdf, true))
+    ->setSecondPage(true)
     ->printing($value)
-;
+    ->setSecondPage(false)
+    ;
 
 
 $pdf->Output('deposit.pdf', "I");
