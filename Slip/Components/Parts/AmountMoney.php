@@ -40,20 +40,16 @@ class AmountMoney extends ComponentsAbstract
         $dashLine = [
             "dash" => "1.5,1"
         ];
+        (new AmountColumnLine($this->pdf, $this->offsetY))
+            ->drawLine(
+                $x + 18.9, $y, 8, 9, true
+            );
         $this->pdf
             ->drawLine($x, $y, 90, 0, 0.6)
             ->drawLine($x, $y + 9, 90, 0, 0.6)
             ->drawLine($x, $y, 0, 9, 0.6)
             ->drawLine($x + 90, $y, 0, 9, 0.6)
             ->drawLine($x + 18.9, $y, 0, 9)
-            ->drawLine($x + 42.5, $y, 0, 9)
-            ->drawLine($x + 66.4, $y, 0, 9)
-            ->drawLine($x + 26.7, $y, 0, 9, 0.1, $dashLine)
-            ->drawLine($x + 34.6, $y, 0, 9, 0.1, $dashLine)
-            ->drawLine($x + 50.5, $y, 0, 9, 0.1, $dashLine)
-            ->drawLine($x + 58.5, $y, 0, 9, 0.1, $dashLine)
-            ->drawLine($x + 74.2, $y, 0, 9, 0.1, $dashLine)
-            ->drawLine($x + 82.3, $y, 0, 9, 0.1, $dashLine)
             ->addText(
                 "金　額",
                 $x,
@@ -112,22 +108,16 @@ class AmountMoney extends ComponentsAbstract
         if(!$x) $x = $this->baseX + 19.1;
         if(!$y) $y = $this->baseY + 17.5;
         $y += $this->offsetY;
-        $dashLine = [
-            "dash" => "1.5,1"
-        ];
+        (new AmountColumnLine($this->pdf, $this->offsetY))
+            ->drawLine(
+                $x+10.8, $y, 6.4 ,7.4, false
+            );
         $this->pdf
             ->drawLine($x, $y, 61.4, 0, 0.6)
             ->drawLine($x, $y+ 7.4, 61.4, 0, 0.6)
             ->drawLine($x, $y, 0, 7.4, 0.6)
             ->drawLine($x+61.4, $y, 0, 7.4, 0.6)
             ->drawLine($x + 10.8, $y, 0, 7.4)
-            ->drawLine($x + 23.5, $y, 0, 7.4)
-            ->drawLine($x + 42.5, $y, 0, 7.4)
-            ->drawLine($x + 17.1, $y, 0, 7.4, 0.1, $dashLine)
-            ->drawLine($x + 29.8, $y, 0, 7.4, 0.1, $dashLine)
-            ->drawLine($x + 36.1, $y, 0, 7.4, 0.1, $dashLine)
-            ->drawLine($x + 48.8, $y, 0, 7.4, 0.1, $dashLine)
-            ->drawLine($x + 55.2, $y, 0, 7.4, 0.1, $dashLine)
             ->addText(
                 "金額",
                 $x,
@@ -148,6 +138,7 @@ class AmountMoney extends ComponentsAbstract
                 16
             )
             ;
+
         return $this;
     }
 

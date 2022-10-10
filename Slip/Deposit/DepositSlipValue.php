@@ -24,6 +24,34 @@ class DepositSlipValue
         // 決算月
         public string $resolutionMonth,
 
+        // 集金日
+        public string $payday,
+        // 締め切り日
+        public string $closeDay,
+        // 前月請求額
+        public string $previousMonthBill,
+        // 御入金額
+        public string $deposits,
+        // 相殺額
+        public string $offsetAmount,
+        // 繰越残高
+        public string $balanceCarriedForward,
+        // 当月御買上額
+        public string $purchaseAmount,
+        // 売上消費税額
+        public string $consumptionTax,
+        // 当月御請求額
+        public string $amountBilled,
+
+        // 伝票枚数
+        public string $numberOfSlips,
+        // 最終入金日
+        public string $lastPaymentDate,
+        // 請求後入金額
+        public string $depositAfterBilling,
+        // 集金額
+        public string $amountCollected,
+
 
 
 

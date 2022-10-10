@@ -62,6 +62,10 @@ class Pdf extends Fpdi
         $this->useFontSet($fontSet);
         return $this;
     }
+    public function getDefaultFont(): FontSet
+    {
+        return $this->defaultFontSet;
+    }
 
     /**
      * 塗り色を指定
@@ -114,7 +118,12 @@ class Pdf extends Fpdi
             // fill => true の場合で今回だけ適用する塗り色 [R,G,B]
             'fillColor' => null,
             // テキストバウンディングボックスのデバッグモード
-            'debug' => false
+            'debug' => false,
+            // パッディング
+            'paddingTop' => 0,
+            'paddingBottom' => 0,
+            'paddingLeft' => 0,
+            'paddingRight' => 0
         ], $options);
         if(is_a($options['font'], FontSet::class)) {
             $this->useFontSet($options['font']);
@@ -126,6 +135,11 @@ class Pdf extends Fpdi
         if($options['fill'] && is_array($options['fillColor'])) {
             $this->setFillColorArray($options['fillColor']);
         }
+
+        $w = $w - $options['paddingLeft'] - $options['paddingRight'];
+        $x += $options['paddingLeft'];
+        $h = $h - $options['paddingTop'] - $options['paddingBottom'];
+        $y += $options['paddingTop'];
 
         $this->MultiCell(
             $w, $h, $text,
