@@ -11,7 +11,7 @@ use App\Slip\Components\Parts\Head;
 use App\Slip\Components\Parts\ItemsTable;
 use App\Slip\Components\Parts\SignTable;
 use App\Slip\Pdf\FontSet;
-use App\Slip\Pdf\Pdf;
+use App\Slip\Pdf\SlipPdf;
 use App\Slip\Pdf\TwoPageTrait;
 
 class DepositSlip
@@ -19,8 +19,8 @@ class DepositSlip
     use TwoPageTrait;
 
     public function __construct(
-        private Pdf $pdf,
-        private bool $isSecond = false
+        private SlipPdf $pdf,
+        private bool    $isSecond = false
     ) {}
 
     public function setSecondPage(bool $isSecond): self

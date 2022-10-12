@@ -9,7 +9,7 @@ require_once(__DIR__. '/../../tcpdf/fpdi/autoload.php');
 
 use setasign\Fpdi\Tcpdf\Fpdi;
 
-class Pdf extends Fpdi
+class SlipPdf extends Fpdi
 {
     /**
      * デフォルトの文字設定

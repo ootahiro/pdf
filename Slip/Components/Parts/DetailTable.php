@@ -5,7 +5,7 @@ namespace App\Slip\Components\Parts;
 use App\Slip\Components\ComponentsAbstract;
 use App\Slip\Components\Table\Table;
 use App\Slip\Pdf\FontSet;
-use App\Slip\Pdf\Pdf;
+use App\Slip\Pdf\SlipPdf;
 
 class DetailTable extends ComponentsAbstract
 {
@@ -15,7 +15,7 @@ class DetailTable extends ComponentsAbstract
     public float $colMinHeight = 4.6;
     public Table $table;
 
-    public function __construct(Pdf $pdf, float $offsetY)
+    public function __construct(SlipPdf $pdf, float $offsetY)
     {
         parent::__construct($pdf, $offsetY);
         $this->thFont = [

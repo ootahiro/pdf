@@ -3,7 +3,7 @@ require_once (__DIR__."/Slip/autoload.php");
 
 use App\Slip\Deposit\DepositSlip;
 use App\Slip\Deposit\DepositSlipValue;
-use App\Slip\Pdf\Pdf;
+use App\Slip\Pdf\SlipPdf;
 
 // モックデータ
 $value = new DepositSlipValue(
@@ -33,7 +33,7 @@ $value = new DepositSlipValue(
 
 );
 
-$pdf = new Pdf("P", "mm", "A4");
+$pdf = new SlipPdf("P", "mm", "A4");
 $pdf->setGlobalTextDebug(false);
 
 $pdf->AddPage();
