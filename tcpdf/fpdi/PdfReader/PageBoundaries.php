@@ -20,7 +20,7 @@ abstract class PageBoundaries
      *
      * The media box defines the boundaries of the physical medium on which the page is to be printed.
      *
-     * @see PDF 32000-1:2008 - 14.11.2 Page Boundaries
+     * @see SlipPdf 32000-1:2008 - 14.11.2 Page Boundaries
      * @var string
      */
     const MEDIA_BOX = 'MediaBox';
@@ -31,7 +31,7 @@ abstract class PageBoundaries
      * The crop box defines the region to which the contents of the page shall be clipped (cropped) when displayed or
      * printed.
      *
-     * @see PDF 32000-1:2008 - 14.11.2 Page Boundaries
+     * @see SlipPdf 32000-1:2008 - 14.11.2 Page Boundaries
      * @var string
      */
     const CROP_BOX = 'CropBox';
@@ -42,7 +42,7 @@ abstract class PageBoundaries
      * The bleed box defines the region to which the contents of the page shall be clipped when output in a
      * production environment.
      *
-     * @see PDF 32000-1:2008 - 14.11.2 Page Boundaries
+     * @see SlipPdf 32000-1:2008 - 14.11.2 Page Boundaries
      * @var string
      */
     const BLEED_BOX = 'BleedBox';
@@ -52,7 +52,7 @@ abstract class PageBoundaries
      *
      * The trim box defines the intended dimensions of the finished page after trimming.
      *
-     * @see PDF 32000-1:2008 - 14.11.2 Page Boundaries
+     * @see SlipPdf 32000-1:2008 - 14.11.2 Page Boundaries
      * @var string
      */
     const TRIM_BOX = 'TrimBox';
@@ -63,7 +63,7 @@ abstract class PageBoundaries
      * The art box defines the extent of the page’s meaningful content (including potential white space) as intended
      * by the page’s creator.
      *
-     * @see PDF 32000-1:2008 - 14.11.2 Page Boundaries
+     * @see SlipPdf 32000-1:2008 - 14.11.2 Page Boundaries
      * @var string
      */
     const ART_BOX = 'ArtBox';
