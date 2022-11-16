@@ -9,8 +9,13 @@ class Table extends ComponentsAbstract
     private array $rows = [];
     private int $colCount = 0;
     private array $colWidths = [];
+    private ?array $stripBgFillColor = null;
 
-    public function createRow(?float $minHeight = null): Row
+    public function createRow(
+        ?float $minHeight = null,
+        ?bool $drawBottomLine = true,
+        float $negativeMarginTop = 0
+    ): Row
     {
         $row = (new Row($this->pdf, $this->offsetY))
             ->setTable($this)
@@ -18,6 +23,11 @@ class Table extends ComponentsAbstract
         if($minHeight) {
             $row->setMinHeight($minHeight);
         }
+        $row
+            ->setDrawBottomLine($drawBottomLine)
+            ->setNegativeMarginTop($negativeMarginTop)
+        ;
+
 
         $this->rows[] = $row;
         return $row;
@@ -64,15 +74,21 @@ class Table extends ComponentsAbstract
     {
         $w = $this->getWidth();
         $h = $this->getHeight();
-        $y += $this->offsetY;
-        $this->pdf->drawLine($x, $y, $w, 0, $outlineWidth);
-        $this->pdf->drawLine($x, $y + $h, $w, 0, $outlineWidth);
-        $this->pdf->drawLine($x, $y, 0, $h, $outlineWidth);
-        $this->pdf->drawLine($x+ $w, $y, 0, $h, $outlineWidth);
+        $baseY = $y += $this->offsetY;
 
         foreach ($this->rows as $key => $row) {
-            $y += $row->drawRow($x, $y, (count($this->rows) -1 === $key ));
+            $y += $row->drawRow(
+                $x,
+                $y,
+                (count($this->rows) -1 === $key ),
+                ($this->stripBgFillColor && $key %2 == 0)? $this->stripBgFillColor : null
+            );
         }
+        $this->pdf->drawLine($x, $baseY, $w, 0, $outlineWidth);
+        $this->pdf->drawLine($x, $baseY + $h, $w, 0, $outlineWidth);
+        $this->pdf->drawLine($x, $baseY, 0, $h, $outlineWidth);
+        $this->pdf->drawLine($x+ $w, $baseY, 0, $h, $outlineWidth);
+
         return $this;
     }
 }
