@@ -2,10 +2,9 @@
 require_once (__DIR__."/Slip/autoload.php");
 
 use App\Slip\Components;
-use App\Slip\Pdf\SlipPdf;
 use App\Slip\SupplierLedger;
 
-$pdf = new SlipPdf("L", "mm", "B4");
+$pdf = SupplierLedger\Writer::createPdf();
 $pdf->setGlobalTextDebug(false);
 
 // モック
@@ -81,7 +80,7 @@ for($i = 1; $i <= 47; $i++) {
         "",
         "",
         "1",
-        "樹脂製品",
+        "樹脂製品".$i,
         "",
         "1000",
         "",

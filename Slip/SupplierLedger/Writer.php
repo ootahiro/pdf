@@ -19,7 +19,12 @@ class Writer
     public function __construct(
         private readonly SlipPdf $pdf
     ) {
-        $this->tableFont = new FontSet(8);
+        $this->tableFont = new FontSet(8.5);
+    }
+
+    static public function createPdf(): SlipPdf
+    {
+        return new SlipPdf("L", "mm", [257,364]);
     }
 
     public function printing(Data $data): self
@@ -30,7 +35,7 @@ class Writer
             ->addTitle(
                 "仕　入　先　元　帳",
                 new FontSet(14.5, FontSet::FONT_MEDIUM, "B"),
-                8.2
+                7.2
             )
             ;
         // ロゴ
@@ -38,7 +43,7 @@ class Writer
             ->addCompanySign(
                 $data->logoFile,
                 253.5,
-                13.8,
+                12.8,
                 45.4,
                 7
             );
@@ -56,51 +61,51 @@ class Writer
             ->addText(
                 $data->postal,
                 self::LEFT,
-                8.9,
+                7.9,
 
                 options: $addressOption
             )->addText(
                 $data->address,
                 self::LEFT,
-                13,
+                12,
                 options:$addressOption
             )
 
             // 仕入れ先元帳番号
             ->addText(
                 "仕入先元帳番号",
-                298.7,
-                6.1,
-                options: $labelFont
+                $this->pdf->getPageWidth() - 54,
+                 6.1,
+                options: $labelFont,
             )->addText(
                 $data->number,
-                323,
-                6.1,
+                $this->pdf->getPageWidth() - 32,
+                5.9,
                 options: $valueFont
             )
             // TEL
             ->addText(
                 "TEL",
                 29.4,
-                24.6,
+                22.6,
                 options: $labelFont
             )->addText(
                 $data->tel,
                 37.7,
-                24.1,
+                22.1,
                 options: $valueFont
             )
             // FAX
             ->addText(
                 "FAX",
                 77.5,
-                24.6,
+                22.6,
 
                 options: $labelFont
             )->addText(
                 $data->fax,
                 85.4,
-                24.1,
+                22.1,
                 options: $valueFont
             )
             ;
@@ -128,11 +133,11 @@ class Writer
                 "valign" => "M",
                 "paddingLeft" => 1.2
             ]);
-        $supplerTable->drawTable(11, 29.3);
+        $supplerTable->drawTable(11, 27.3);
         $this->pdf->addText(
             "様",
             128.1,
-            36.4,
+            34.4,
             options: [
                 "font" => new FontSet(9)
             ]
@@ -156,7 +161,7 @@ class Writer
             "align" => "R",
             "valign" => "B"
         ];
-        $headTableY = 29.3;
+        $headTableY = 27.3;
         $headRow = $headTable->createRow(4.4, false)
             ->createCol("前月買掛残高", $headFont,  rightLineOption: $lineOption)
             ->createCol("支　払　額", $headFont,  rightLineOption: $lineOption)
@@ -201,7 +206,7 @@ class Writer
 
         // Dash線を先に引く
         $diff = 6.4;
-        $dashX = 159.6;
+        $dashX = 170.7;
         $spaceDiff = 25;
         for($i = 1; $i <= 6; $i++) {
             $this->pdf->drawLine($dashX, $headY, 0, $headToY, 0.1, ["dash" => true]);
@@ -211,12 +216,12 @@ class Writer
         // テーブル描画
         $headTable->drawTable(
             $this->pdf->getPageWidth() - $headTable->getWidth() - 7.8,
-            29.3);
+            27.3);
 
         // 税区分
         $this->pdf->addText(
             "C:8% D:10%↓",
-            322.8,43,
+            334,41,
             options: [
                 "font" => new FontSet(9)
             ]
@@ -227,15 +232,15 @@ class Writer
             ->setColWidths([
                 5.5, 5.5, 14, 4,
                 //品名・サイズ・数量
-                60, 72.5, 10.2,5.5,
+                66, 75.5, 12.2,5.5,
                 //単位,単価,金額,消費税
                 10.8, 15.8, 5.5, 17.7, 17.7,
                 // 支区, 伝票計, 残高
                 4, 17.7, 17.7,
                 //摘要, 注番, 税
-                31.7, 13.7, 5
+                31.7, 13.7, 5.5
             ]);
-        $tableY = 47.7;
+        $tableY = 45.7;
         $smallFont = [
             "font" => new FontSet(5.1, color: [255,255,255]),
             "align" => "C",
@@ -275,41 +280,41 @@ class Writer
         $dashY1 = $tableY + 4.4;
         $dashY2 =  $mainTable->getHeight() - 4.4;
         // 数量
-        $this->pdf->drawLine(175.7, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(187.4, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
         // 単価
-        $this->pdf->drawLine(203.2, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
-        $this->pdf->drawLine(207.9, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(214.6, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(219.6, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
         // 金額
-        $this->pdf->drawLine(226.4, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
-        $this->pdf->drawLine(231, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(237.85, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(242.8, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
         // 消費税
-        $this->pdf->drawLine(248.7, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(260.5, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
         // 伝票計
-        $this->pdf->drawLine(265.8, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
-        $this->pdf->drawLine(270.5, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(277.2, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(282.15, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
         // 残高
-        $this->pdf->drawLine(283.5, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
-        $this->pdf->drawLine(288.15, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(294.95, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
+        $this->pdf->drawLine(299.85, $dashY1, 0, $dashY2, 0.1, ["dash" => true]);
 
         // フッター注釈
         $font = new FontSet(8);
         $triangle = new FontSet(4);
-        $this->pdf->addText("▲", 36, 231.3, w:10 ,options: ["font" => $triangle]);
+        $this->pdf->addText("▲", 36, $tableY + $mainTable->getHeight() + 2.5, w:10 ,options: ["font" => $triangle]);
         $this->pdf->addText(
             " 1.仕入 2返品 3.値引 11.仕入訂正 12.返品訂正 13.値引訂正",
             38.5,
-            230.3,
+            $tableY + $mainTable->getHeight() + 1.7,
             w: 80,
             options: [
                 "font" => $font
             ]
         );
-        $this->pdf->addText("▲", 255.7, 231.3, w:10 ,options: ["font" => $triangle]);
+        $this->pdf->addText("▲", 267, $tableY + $mainTable->getHeight() + 2.5, w:10 ,options: ["font" => $triangle]);
         $this->pdf->addText(
             "1.現金　　3.振込み　5.売掛金　　　7.支払割引
 2.小切手　4.手形　　6.振込手数料　8.その他",
-            258.7,
-            230.3,
+            270,
+            $tableY + $mainTable->getHeight() + 1.7,
             w: 80,
             options: [
                 "font" => $font
@@ -337,7 +342,7 @@ class Writer
         ];
         if($data) {
             $row = $mainTable
-                ->createRow(3.5, false)
+                ->createRow(3.9, false)
                 ->createCol($data->month, $center, rightLineOption: ["dash" => true])
                 ->createCol($data->day, $center)
                 ->createCol($data->slipNumber, $center)
