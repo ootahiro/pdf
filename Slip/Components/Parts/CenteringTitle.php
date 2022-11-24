@@ -13,7 +13,8 @@ class CenteringTitle extends ComponentsAbstract
         string $title,
         FontSet $fontSet,
         float $y,
-        float $borderWidth = 0.6
+        float $borderWidth = 0.6,
+        array $borderOption = []
     ): self
     {
         $textWidth = $this->pdf->getCellWidthByText($title, $fontSet);
@@ -38,7 +39,8 @@ class CenteringTitle extends ComponentsAbstract
                 $y + $textHeight,
                 $textWidth,
                 0,
-                0.6
+                $borderWidth,
+                $borderOption
             );
         }
 
