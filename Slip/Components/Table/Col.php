@@ -39,8 +39,12 @@ class Col extends ComponentsAbstract
         }
         $this->text = $text;
         $this->textOption = array_merge($this->textOption, $textOption);
-        $height = $this->pdf->getStringHeight($this->width, $text);
-        $this->height = $this->row->setHeight($height);
+        if(isset($textOption['height'])) {
+            $this->height = $this->row->setHeight($textOption['height']);
+        } else {
+            $height = $this->pdf->getStringHeight($this->width, $text);
+            $this->height = $this->row->setHeight($height);
+        }
 
         if($this->fontSet) {
             $this->pdf->useFontSet($this->pdf->getDefaultFont());

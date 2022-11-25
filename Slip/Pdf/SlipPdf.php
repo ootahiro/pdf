@@ -139,7 +139,7 @@ class SlipPdf extends Fpdi
             'autopadding' => true,
             'maxh' => $h,
             'valign' => 'T',
-            'fitcell' => false,
+            'fitcell' => true,
             // 今回のみのフォント設定 FontSetインスタンス
             'font' => null,
             // fill => true の場合で今回だけ適用する塗り色 [R,G,B]
