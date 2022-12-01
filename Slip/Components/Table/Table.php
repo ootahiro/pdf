@@ -70,7 +70,7 @@ class Table extends ComponentsAbstract
         return $height;
     }
 
-    public function drawTable(float $x, float $y, float $outlineWidth = 0.6): self
+    public function drawTable(float $x, float $y, float $outlineWidth = 0.6, array $outlineOption = array()): self
     {
         $w = $this->getWidth();
         $h = $this->getHeight();
@@ -84,10 +84,10 @@ class Table extends ComponentsAbstract
                 ($this->stripBgFillColor && $key %2 == 0)? $this->stripBgFillColor : null
             );
         }
-        $this->pdf->drawLine($x, $baseY, $w, 0, $outlineWidth);
-        $this->pdf->drawLine($x, $baseY + $h, $w, 0, $outlineWidth);
-        $this->pdf->drawLine($x, $baseY, 0, $h, $outlineWidth);
-        $this->pdf->drawLine($x+ $w, $baseY, 0, $h, $outlineWidth);
+        $this->pdf->drawLine($x, $baseY, $w, 0, $outlineWidth, $outlineOption);
+        $this->pdf->drawLine($x, $baseY + $h, $w, 0, $outlineWidth, $outlineOption);
+        $this->pdf->drawLine($x, $baseY, 0, $h, $outlineWidth, $outlineOption);
+        $this->pdf->drawLine($x+ $w, $baseY, 0, $h, $outlineWidth, $outlineOption);
 
         return $this;
     }
