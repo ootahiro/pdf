@@ -237,8 +237,10 @@ class SlipPdf extends Fpdi
         $toX = ($toX)? $x + $toX : $x;
         $toY = ($toY)? $y + $toY : $y;
         $dash = (isset($options['dash']) && $options['dash']);
+        $color = ($options['line_color'] ?? [0, 0, 0]);
         $options = array_merge([
             "width" => $width,
+            "color" => $color,
             "cap" => "round"
         ], $options);
         $this->Line(
@@ -250,7 +252,7 @@ class SlipPdf extends Fpdi
             ]);
         }
         $this->setLineStyle([
-            "color" => [0,0,0]
+            "color" => $color
         ]);
 
         return $this;

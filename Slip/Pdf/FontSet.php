@@ -8,6 +8,7 @@ class FontSet
 {
     public const FONT_NORMAL = "genshingothicpnormal";
     public const FONT_MEDIUM = "genshingothicpmedium";
+    public const FONT_MINCHO = "aozoraminchomedium";
 
     public function __construct(
         private float $size,
