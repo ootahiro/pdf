@@ -258,6 +258,17 @@ class SlipPdf extends Fpdi
         return $this;
     }
 
+    /**
+     * 短形を塗る
+     * @param float $x
+     * @param float $y
+     * @param float $w
+     * @param float $h
+     * @param array $color
+     * @param string $style
+     * @param array|null $borderStyle
+     * @return $this
+     */
     public function fillRect(
         float $x,
         float $y,
@@ -273,6 +284,34 @@ class SlipPdf extends Fpdi
             $borderStyle? $borderStyle: [],
             $color
         );
+        return $this;
+    }
+
+    /**
+     * 四角を描画
+     * @param float $x
+     * @param float $y
+     * @param float $w
+     * @param float $h
+     * @param float $borderWidth
+     * @param array|null $borderOption
+     * @return $this
+     */
+    public function drawLineRect(
+        float $x,
+        float $y,
+        float $w,
+        float $h,
+        float $borderWidth = 0.2,
+        ?array $borderOption = []
+    ): self
+    {
+        $this
+            ->drawLine($x, $y, $w, 0, $borderWidth, $borderOption)
+            ->drawLine($x, $y, 0, $h, $borderWidth, $borderOption)
+            ->drawLine($x+$w, $y, 0, $h, $borderWidth, $borderOption)
+            ->drawLine($x, $y+$h, $w, 0, $borderWidth, $borderOption)
+            ;
         return $this;
     }
 
