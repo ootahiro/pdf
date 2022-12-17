@@ -12,6 +12,9 @@ class Row extends ComponentsAbstract
     private float $minHeight = 0;
     private float $height = 0;
     private float $underLineWidth = 0.2;
+    private bool $drawBottomLine = true;
+    private float $negativeMarginTop = 0;
+    private ?array $fillColor = null;
 
     public function setTable(Table $table): self
     {
@@ -22,6 +25,26 @@ class Row extends ComponentsAbstract
     public function setMinHeight(float $height): self
     {
         $this->minHeight = $height;
+        return $this;
+    }
+    public function setDrawBottomLine(bool $draw): self
+    {
+        $this->drawBottomLine = $draw;
+        return $this;
+    }
+    public function setNegativeMarginTop(float $margin): self
+    {
+        $this->negativeMarginTop = $margin;
+        return $this;
+    }
+    public function getNegativeMarginTop(): float
+    {
+        return $this->negativeMarginTop;
+    }
+
+    public function setFillColor(?array $fillColor): self
+    {
+        $this->fillColor = $fillColor;
         return $this;
     }
 
@@ -37,7 +60,8 @@ class Row extends ComponentsAbstract
     }
     public function getHeight(): float
     {
-        return ($this->height > $this->minHeight)? $this->height : $this->minHeight;
+        $height = ($this->height > $this->minHeight)? $this->height : $this->minHeight;
+        return $height - $this->negativeMarginTop;
     }
 
     public function setUnderLineWidth(float $width): self
@@ -46,7 +70,13 @@ class Row extends ComponentsAbstract
         return $this;
     }
 
-    public function createCol(string $text, array $textOption = [], int $colspan = 1): self
+    public function createCol(
+        string $text,
+        array $textOption = [],
+        int $colspan = 1,
+        ?array $fillColor = null,
+        ?array $rightLineOption = []
+    ): self
     {
         if(!$this->table) {
             throw new \LogicException("Table not assign.");
@@ -65,6 +95,12 @@ class Row extends ComponentsAbstract
             ->setWidth($colWidth)
             ->setText($text, $textOption)
         ;
+        if($fillColor) {
+            $col->setFillColor($fillColor);
+        }
+        if($rightLineOption) {
+            $col->setRightLineOption($rightLineOption);
+        }
 
         $this->cols[] = [
             "col" => $col,
@@ -83,13 +119,15 @@ class Row extends ComponentsAbstract
 
     public function drawRow(float $x, float $y, bool $isLastRow = false): float
     {
-        if(!$isLastRow) {
-            $this->pdf->drawLine($x, $y+ $this->getHeight(), $this->table->getWidth(), 0, $this->underLineWidth);
+        if($this->fillColor) {
+            $this->pdf->fillRect($x, $y, $this->table->getWidth(), $this->getHeight(), $this->fillColor);
+        }
+        if(!$isLastRow && true === $this->drawBottomLine) {
+            $this->pdf->drawLine($x, $y + $this->getHeight(), $this->table->getWidth(), 0, $this->underLineWidth);
         }
         foreach($this->cols as $key => $col) {
-            $x += $col['col']->drawColText($x, $y, (count($this->cols) -1 === $key));
+            $x += $col['col']->drawColText($x, $y-$this->negativeMarginTop, (count($this->cols) -1 === $key));
         }
-
         return $this->getHeight();
     }
 }

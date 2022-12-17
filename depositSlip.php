@@ -1,6 +1,7 @@
 <?php
 require_once (__DIR__."/Slip/autoload.php");
 
+use App\Slip\Components;
 use App\Slip\Deposit\DepositSlip;
 use App\Slip\Deposit\DepositSlipValue;
 use App\Slip\Pdf\SlipPdf;
@@ -10,7 +11,7 @@ $value = new DepositSlipValue(
     "03286",
     "50220400099",
     "三工機器　株式会社",
-    __DIR__. "/ootahiro_logo_w193x30.png",
+    Components\Logo::getLogoFilePath(),
     "名古屋西営業所",
     "505011",
     "伊藤 守",
@@ -34,7 +35,7 @@ $value = new DepositSlipValue(
 );
 
 $pdf = new SlipPdf("P", "mm", "A4");
-$pdf->setGlobalTextDebug(false);
+$pdf->setGlobalTextDebug(true);
 
 $pdf->AddPage();
 $writer = (new DepositSlip($pdf))

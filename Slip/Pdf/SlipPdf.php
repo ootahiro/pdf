@@ -12,6 +12,12 @@ use setasign\Fpdi\Tcpdf\Fpdi;
 class SlipPdf extends Fpdi
 {
     /**
+     * Pdf->GetStringWidth()で幅を取得すると文字が落ちてしまうので、
+     * 落ちないぎりぎりの追加する幅の、文字サイズに対する割合
+     */
+    public const TEXT_NO_WRAP_PADDING_RATIO = 6.9;
+
+    /**
      * デフォルトの文字設定
      */
     private FontSet $defaultFontSet;
@@ -29,6 +35,8 @@ class SlipPdf extends Fpdi
      */
     private bool $globalTextDebug = false;
 
+    private array $dumpData = [];
+
     public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $pdfa = false)
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache, $pdfa);
@@ -40,6 +48,25 @@ class SlipPdf extends Fpdi
         $this->defaultFillColor = [255,255,255];
     }
 
+    public function dumpPage()
+    {
+        $this->AddPage();
+        $this->addText(
+            implode("\n", $this->dumpData),
+            10, 10,
+            options: [
+                "font" => new FontSet(8.5, color: [0,0,0])
+            ]
+        );
+    }
+    public function dump($arg): self
+    {
+        $trace = debug_backtrace();
+        $this->dumpData[] = $trace[0]["file"]. " IN ". $trace[0]["line"];
+        $this->dumpData[] = var_export($arg, true);
+        $this->dumpData[] = " ";
+        return $this;
+    }
     /**
      * テキストのバウンディングボックスの全体デバッグモードを指定
      * @param bool $mode
@@ -112,7 +139,7 @@ class SlipPdf extends Fpdi
             'autopadding' => true,
             'maxh' => $h,
             'valign' => 'T',
-            'fitcell' => false,
+            'fitcell' => true,
             // 今回のみのフォント設定 FontSetインスタンス
             'font' => null,
             // fill => true の場合で今回だけ適用する塗り色 [R,G,B]
@@ -127,6 +154,9 @@ class SlipPdf extends Fpdi
         ], $options);
         if(is_a($options['font'], FontSet::class)) {
             $this->useFontSet($options['font']);
+            $font = $options["font"];
+        } else {
+            $font = $this->defaultFontSet;
         }
         if(!$options['fill'] && ($options['debug'] || $this->globalTextDebug)) {
             $options['fill'] = 1;
@@ -135,7 +165,9 @@ class SlipPdf extends Fpdi
         if($options['fill'] && is_array($options['fillColor'])) {
             $this->setFillColorArray($options['fillColor']);
         }
-
+        if(!$w) {
+            $w = $this->getCellWidthByText($text, $font) + ($font->getSize() * 0.1);
+        }
         $w = $w - $options['paddingLeft'] - $options['paddingRight'];
         $x += $options['paddingLeft'];
         $h = $h - $options['paddingTop'] - $options['paddingBottom'];
@@ -177,6 +209,8 @@ class SlipPdf extends Fpdi
     public function useFontSet(FontSet $fontSet): self
     {
         $this->setFont($fontSet->getFamily(), $fontSet->getStyle(), $fontSet->getSize());
+        $color = $fontSet->getColor();
+        $this->setTextColor($color[0], $color[1], $color[2]);
         return $this;
     }
 
@@ -203,8 +237,10 @@ class SlipPdf extends Fpdi
         $toX = ($toX)? $x + $toX : $x;
         $toY = ($toY)? $y + $toY : $y;
         $dash = (isset($options['dash']) && $options['dash']);
+        $color = ($options['line_color'] ?? [0, 0, 0]);
         $options = array_merge([
             "width" => $width,
+            "color" => $color,
             "cap" => "round"
         ], $options);
         $this->Line(
@@ -215,7 +251,66 @@ class SlipPdf extends Fpdi
                 "dash" => false
             ]);
         }
+        $this->setLineStyle([
+            "color" => $color
+        ]);
 
         return $this;
+    }
+
+    public function fillRect(
+        float $x,
+        float $y,
+        float $w,
+        float $h,
+        array $color,
+        string $style = "F",
+        ?array $borderStyle = null
+    ): self
+    {
+        $this->rect(
+            $x, $y, $w, $h, $style,
+            $borderStyle? $borderStyle: [],
+            $color
+        );
+        return $this;
+    }
+
+    /**
+     * 文字と設定から必要な横幅を返す
+     * @param string $text
+     * @param FontSet $fontSet
+     * @return float
+     */
+    public function getCellWidthByText(
+        string $text,
+        FontSet $fontSet
+    ): float
+    {
+        return $this->GetStringWidth(
+            $text,
+            $fontSet->getFamily(),
+            $fontSet->getStyle(),
+            $fontSet->getSize()
+        ) + ($fontSet->getSize() / self::TEXT_NO_WRAP_PADDING_RATIO);
+    }
+
+    /**
+     * 文字高さを取得
+     * @param float $textWidth
+     * @param string $text
+     * @param FontSet $fontSet
+     * @return float
+     */
+    public function getCellHeightByText(
+        float $textWidth,
+        string $text,
+        FontSet $fontSet
+    ): float
+    {
+        $this->useFontSet($fontSet);
+        $height = $this->GetStringHeight($textWidth, $text, false);
+        $this->useFontSet($this->defaultFontSet);
+        return $height;
     }
 }

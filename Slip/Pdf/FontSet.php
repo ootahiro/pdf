@@ -8,11 +8,13 @@ class FontSet
 {
     public const FONT_NORMAL = "genshingothicpnormal";
     public const FONT_MEDIUM = "genshingothicpmedium";
+    public const FONT_MINCHO = "aozoraminchomedium";
 
     public function __construct(
         private float $size,
         private string $family = self::FONT_NORMAL,
-        private string $style = ""
+        private string $style = "",
+        private array $color = [0,0,0]
     ) {
     }
 
@@ -27,5 +29,9 @@ class FontSet
     public function getSize(): float
     {
         return $this->size;
+    }
+    public function getColor(): array
+    {
+        return $this->color;
     }
 }
