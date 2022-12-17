@@ -9,6 +9,13 @@ use App\Slip\Pdf\FontSet;
 
 class Head extends ComponentsAbstract
 {
+    static public string $headQuarterAddress = "本社
+〒454-0056
+名古屋市中川区十一番町2丁目6番地";
+    static public string $headQuarterPhone = "052-661-6161";
+    static public string $headQuarterFax = "052-661-6567";
+    static public string $headQuarterBank = "三菱UFJ銀行 浄心支店 当座 0152138
+名義:カ)オオタヒロ 銀行コード:0005-400";
     /**
      * 宛名記入欄
      * @param float $x
@@ -226,6 +233,41 @@ class Head extends ComponentsAbstract
             [
                 "font" => new FontSet(10.4)
             ]
+        );
+        return $this;
+    }
+
+    /**
+     * 会社所在地を印字
+     * @param float $x
+     * @param float $y
+     * @param FontSet $font
+     * @param string|null $address
+     * @return $this
+     */
+    public function drawHeadQuarterAddress(float $x, float $y, FontSet $font, ?string $address = null): self
+    {
+        $address = $address ? $address : self::$headQuarterAddress;
+        $this->pdf->addText(
+            $address, $x, $y, options:["font" => $font]
+        );
+        return $this;
+    }
+
+    /**
+     * 会社電話番号を印字
+     * @param float $x
+     * @param float $y
+     * @param FontSet $font
+     * @param string|null $phone
+     * @param string $preFix
+     * @return $this
+     */
+    public function drawHeadQuarterPhone(float $x, float $y, FontSet $font, ?string $phone = null, string $preFix = "TEL　"): self
+    {
+        $phone = $phone ? $phone : self::$headQuarterPhone;
+        $this->pdf->addText(
+            $preFix. $phone, $x, $y, options: ["font" => $font]
         );
         return $this;
     }

@@ -22,16 +22,39 @@ class FontSet
     {
         return $this->family;
     }
+    public function setFamily(string $family): self
+    {
+        $this->family = $family;
+        return $this;
+    }
+
     public function getStyle(): string
     {
         return $this->style;
     }
+    public function setStyle(string $style): self
+    {
+        $this->style = $style;
+        return $this;
+    }
+
     public function getSize(): float
     {
         return $this->size;
     }
+    public function setSize(float $size): self
+    {
+        $this->size = $size;
+        return $this;
+    }
+
     public function getColor(): array
     {
         return $this->color;
+    }
+    public function setColor(array $color): self
+    {
+        $this->color = $color;
+        return $this;
     }
 }
